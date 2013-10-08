@@ -5,7 +5,6 @@ import(
   "fmt"
   "os"
   "encoding/json"
-  "io/ioutil"
 )
 
 func main() {
@@ -30,18 +29,10 @@ func deploy(res http.ResponseWriter, req *http.Request) {
   }
 
   fmt.Println("Processing deployment")
-  //reading body
-  body, err := ioutil.ReadAll(req.Body)
-  if err != nil {
-    fmt.Println("[ERROR] reading body : ", err)
-    return
-  }
-  fmt.Println("Body: ", string(body))
-
   //parsing JSON
   var data interface{}
-  decoder := json.NewDecoder(body)
-  err = decoder.Decode(&data)
+  decoder := json.NewDecoder(req.Body)
+  err := decoder.Decode(&data)
   if err != nil {
     fmt.Println("[ERROR] parsing body : ", err)
     return
