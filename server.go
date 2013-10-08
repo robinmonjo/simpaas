@@ -40,7 +40,7 @@ func deploy(res http.ResponseWriter, req *http.Request) {
 
   body = []byte(html.UnescapeString(string(body)))
 
-  fmt.Println(body)
+  fmt.Println(string(body))
 
   //parsing JSON
   var data interface{}
