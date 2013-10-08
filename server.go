@@ -43,14 +43,15 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
   mapPayload := payload.(map[string]interface{})
   repository := mapPayload["repository"].(map[string]interface{})
   repoURL := repository["url"].(string)
+  appName := repository["name"].(string)
 
-  deploy(repoURL)
+  deploy(repoURL, appName)
 }
 
-func deploy(repo string) {
-  fmt.Println("Starting deployment for app on: ", repo)
+func deploy(repo string, appName string) {
+  fmt.Println("Starting deployment for app ", appName, " on: ", repo)
   dir, _ := os.Getwd() 
-  _, err := exec.Command("git clone " + repo + " " + dir + "/clones").Output()
+  _, err := exec.Command("git clone " + repo + " " + dir + "/clones/" + appName).Output()
   if err != nil {
     fmt.Println("[ERROR] git clone failed: ", err)
   }
