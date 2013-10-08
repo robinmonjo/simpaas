@@ -6,6 +6,7 @@ import(
   "os"
   "encoding/json"
   "os/exec"
+  "io/ioutil"
 )
 
 func main() {
@@ -50,6 +51,7 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
 
 func deploy(repo string, appName string) {
   cloneApp(repo, appName)
+  buildApp(appName)
 }
 
 func cloneApp(repo string, appName string) {
@@ -69,4 +71,20 @@ func cloneApp(repo string, appName string) {
     fmt.Println("[ERROR] git clone failed: ", err)
   }
   fmt.Println(" done")
+}
+
+func buildApp(appName string) {
+  dir, _ := os.Getwd()
+  config, err := ioutil.ReadFile(dir + "/clones/" + appName + "/simpaas_config.json")
+  if err != nil {
+    fmt.Println("[ERROR] failed to read simpaas_config: ", err)
+  }
+  var conf interface{}
+  err = json.Unmarshal(config, &conf)
+  if err != nil {
+    fmt.Println("[ERROR] failed to parse simpaas_config: ", err)
+  }
+  mapConf := conf.(map[string]interface{})
+  buildpackRepo := mapConf["buildpack_repo"].(string)
+  fmt.Println("Will use ", buildpackRepo, " to build app")
 }
