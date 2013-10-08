@@ -2,11 +2,9 @@ package main
 
 import(
   "net/http"
-  "html"
   "fmt"
   "os"
   "encoding/json"
-  "io/ioutil"
 )
 
 func main() {
@@ -31,26 +29,13 @@ func deploy(res http.ResponseWriter, req *http.Request) {
   }
 
   fmt.Println("Processing deployment")
-  //reading body
-  body, err := ioutil.ReadAll(req.Body)
-  if err != nil {
-    fmt.Println("[ERROR] reading body : ", err)
-    return
-  }
 
-  body = []byte(html.UnescapeString(string(body)))
-
-  fmt.Println(string(body))
-
-  //parsing JSON
-  var data interface{}
-  err = json.Unmarshal(body, &data)
+  payloadData := []byte(req.FormValue("payload"))
+  var payload interface{}
+  err := json.Unmarshal(payloadData, &payload)
   if err != nil {
     fmt.Println("[ERROR] parsing body : ", err)
     return
   }
-
-
-
 
 }
