@@ -13,6 +13,10 @@ func main() {
     port = "9999"
   }
   fmt.Println("simpaas listening on ", port)
+  err := http.ListenAndServe(":" + port, nil)
+  if err != nil {
+    panic(err)
+  }
 }
 
 //routes
