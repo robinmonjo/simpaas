@@ -55,7 +55,7 @@ func deploy(repo string, appName string) {
     fmt.Println("git not installed")
   }
   dir, _ := os.Getwd() 
-  _, err = exec.Command(git + " clone " + repo + " " + dir + "/clones/" + appName).Output()
+  _, err = exec.Command(git, "clone", repo, dir + "/clones/" + appName).Output()
   if err != nil {
     fmt.Println("[ERROR] git clone failed: ", err)
   }
