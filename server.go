@@ -4,6 +4,8 @@ import(
   "net/http"
   "fmt"
   "os"
+  "encoding/json"
+  "io/ioutil"
 )
 
 func main() {
@@ -21,5 +23,31 @@ func main() {
 
 //routes
 func deploy(res http.ResponseWriter, req *http.Request) {
-  fmt.Println("Getting a deploy action")
+  
+  if req.Method != "POST" {
+    fmt.Fprintf(res, "Up, waiting for a POST request from github.com")
+    return
+  }
+
+  fmt.Println("Processing deployment")
+  //reading body
+  body, err := ioutil.ReadAll(req.Body)
+  if err != nil {
+    fmt.Println("[ERROR] reading body : ", err)
+    return
+  }
+
+  //parsing JSON
+  var data interface{}
+  err = json.Unmarshal(body, &data)
+  if err != nil {
+    fmt.Println("[ERROR] parsing body : ", err)
+    return
+  }
+
+  fmt.Println("Data: ", data)
+
+
+
+
 }
