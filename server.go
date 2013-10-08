@@ -3,10 +3,11 @@ package main
 import(
   "net/http"
   "fmt"
+  "os"
 )
 
 func main() {
-  http.HandleFunc("/deploy", root)
+  http.HandleFunc("/deploy", deploy)
   port := os.Getenv("PORT")
   if len(port) == 0 {
     port = "9999"
