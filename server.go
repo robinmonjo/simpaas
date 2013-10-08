@@ -38,4 +38,6 @@ func deploy(res http.ResponseWriter, req *http.Request) {
     return
   }
 
+  fmt.Println("Payload = ", payload)
+
 }
