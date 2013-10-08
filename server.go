@@ -49,11 +49,11 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
 }
 
 func deploy(repo string, appName string) {
-  
+  cloneApp(repo, appName)
 }
 
-func cloningApp(repo string, appName string) {
-  fmt.Println("Downloading ", appName, " on: ", repo)
+func cloneApp(repo string, appName string) {
+  fmt.Print("Downloading ", appName, " on: ", repo, " ...")
   //1: removing old version
   dir, _ := os.Getwd()
   err := exec.Command("rm", "-rf", dir + "/clones/" + appName).Run()
@@ -68,4 +68,5 @@ func cloningApp(repo string, appName string) {
   if err != nil {
     fmt.Println("[ERROR] git clone failed: ", err)
   }
+  fmt.Println(" done")
 }
