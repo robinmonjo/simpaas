@@ -50,8 +50,12 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
 
 func deploy(repo string, appName string) {
   fmt.Println("Starting deployment for app ", appName, " on: ", repo)
+  git, err := exec.LookPath("git")
+  if err != nil {
+    fmt.Println("git not installed")
+  }
   dir, _ := os.Getwd() 
-  _, err := exec.Command("git clone " + repo + " " + dir + "/clones/" + appName).Output()
+  _, err = exec.Command(git + " clone " + repo + " " + dir + "/clones/" + appName).Output()
   if err != nil {
     fmt.Println("[ERROR] git clone failed: ", err)
   }
