@@ -49,7 +49,7 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
 
 func deploy(repo string) {
   fmt.Println("Starting deployment for app on: ", repo)
-  _, err := exec.Command("mkdir -p clones && git clone " + repo + " ./clones").Output()
+  _, err := exec.Command("git clone " + repo + " ./clones").Output()
   if err != nil {
     fmt.Println("[ERROR] git clone failed: ", err)
   }
