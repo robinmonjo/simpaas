@@ -5,6 +5,7 @@ import(
   "fmt"
   "os"
   "encoding/json"
+  "os/exec"
 )
 
 func main() {
@@ -30,6 +31,7 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
 
   fmt.Println("Processing deployment")
 
+  //extracting repo URL
   payloadData := []byte(req.FormValue("payload"))
   var payload interface{}
   err := json.Unmarshal(payloadData, &payload)
@@ -38,12 +40,18 @@ func startDeployment(res http.ResponseWriter, req *http.Request) {
     return
   }
 
-  deploy(payload)
-}
-
-func deploy(payload interface{}) {
   mapPayload := payload.(map[string]interface{})
   repository := mapPayload["repository"].(map[string]interface{})
-  repo_url := repository["url"]
-  fmt.Println("Getting ready to deploy app on: ", repo_url)
+  repoURL := repository["url"].(string)
+
+  deploy(repoURL)
+}
+
+func deploy(repo string) {
+  fmt.Println("Starting deployment for app on: ", repo)
+  _, err := exec.Command("git clone " + repo + " ~/clones").Output()
+  if err != nil {
+    fmt.Println("[ERROR] git clone failed: ", err)
+  }
+
 }
