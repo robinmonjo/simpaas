@@ -8,7 +8,7 @@ import(
 )
 
 func main() {
-  http.HandleFunc("/deploy", deploy)
+  http.HandleFunc("/deploy", startDeployment)
   port := os.Getenv("PORT")
   if len(port) == 0 {
     port = "9999"
@@ -21,7 +21,7 @@ func main() {
 }
 
 //routes
-func deploy(res http.ResponseWriter, req *http.Request) {
+func startDeployment(res http.ResponseWriter, req *http.Request) {
   
   if req.Method != "POST" {
     fmt.Fprintf(res, "Up, waiting for a POST request from github.com")
@@ -38,6 +38,12 @@ func deploy(res http.ResponseWriter, req *http.Request) {
     return
   }
 
-  fmt.Println("Payload = ", payload)
+  deploy(payload)
+}
 
+func deploy(payload interface{}) {
+  mapPayload := payload.(map[string]interface{})
+  repository := mapPayload["repository"].(map[string]interface{})
+  repo_url := repository["url"]
+  fmt.Println("Getting ready to deploy app on: ", repo_url)
 }
