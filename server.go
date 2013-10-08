@@ -36,6 +36,7 @@ func deploy(res http.ResponseWriter, req *http.Request) {
     fmt.Println("[ERROR] reading body : ", err)
     return
   }
+  fmt.Println("Body: ", string(body))
 
   //parsing JSON
   var data interface{}
