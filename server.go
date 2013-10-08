@@ -40,7 +40,8 @@ func deploy(res http.ResponseWriter, req *http.Request) {
 
   //parsing JSON
   var data interface{}
-  err = json.Unmarshal(body, &data)
+  decoder := json.NewDecoder(body)
+  err = decoder.Decode(&data)
   if err != nil {
     fmt.Println("[ERROR] parsing body : ", err)
     return
