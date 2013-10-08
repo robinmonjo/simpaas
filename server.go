@@ -16,5 +16,5 @@ func main() {
 
 //routes
 func deploy(res http.ResponseWriter, req *http.Request) {
-  
+  fmt.Println("Getting a deploy action")
 }
